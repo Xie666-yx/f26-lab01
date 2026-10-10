@@ -29,3 +29,4 @@ See the Lab 1 handout on the course page for the three milestones you show a TA.
 本项目实验使用AI大模型辅助构思、生成与审查代码。
 所有AI生成代码均经过小组人工审阅、校验、补充测试用例，人工验证正确性后才纳入仓库。
 会话记录transcripts文件夹仅本地保存，不提交至GitHub远程仓库。
+B角色M1诊断修复评议用
