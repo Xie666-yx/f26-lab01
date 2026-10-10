@@ -46,4 +46,50 @@ public class BookingService {
     public List<Booking> listBookings(Room room) {
         return store.bookingsForRoom(room);
     }
+
+    /**
+     * Cancels the confirmed booking with the given id.
+     * If the booking does not exist, does nothing.
+     * After removal, promotes at most one waitlisted user for the same room,
+     * in seq order, whose interval does not overlap any remaining confirmed booking.
+     */
+    public void cancelBooking(String bookingId) {
+        java.util.Optional<Booking> found = store.findBooking(bookingId);
+        if (found.isEmpty()) {
+            return;
+        }
+        Booking cancelled = found.get();
+        Room room = cancelled.room();
+
+        store.removeBooking(bookingId);
+
+        java.util.List<Booking> remaining = store.bookingsForRoom(room);
+
+        java.util.List<WaitlistEntry> waitlist =
+                new java.util.ArrayList<>(store.waitlistForRoom(room));
+        waitlist.sort(java.util.Comparator.comparingInt(WaitlistEntry::seq));
+
+        for (WaitlistEntry entry : waitlist) {
+            boolean conflicts = false;
+            for (Booking b : remaining) {
+                if (b.interval().overlaps(entry.interval())) {
+                    conflicts = true;
+                    break;
+                }
+            }
+            if (conflicts) {
+                continue;
+            }
+
+            store.removeWaitlistEntry(entry.id());
+            Booking promoted = new Booking(
+                    "b" + nextBookingSeq++,
+                    entry.room(),
+                    entry.user(),
+                    entry.interval()
+            );
+            store.addBooking(promoted);
+            break;
+        }
+    }
 }
