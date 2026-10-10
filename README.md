@@ -29,3 +29,11 @@ See the Lab 1 handout on the course page for the three milestones you show a TA.
 本项目实验使用AI大模型辅助构思、生成与审查代码。
 所有AI生成代码均经过小组人工审阅、校验、补充测试用例，人工验证正确性后才纳入仓库。
 会话记录transcripts文件夹仅本地保存，不提交至GitHub远程仓库。
+# Git Contribution Guidelines
+1. Work in feature branches. Never commit directly to the `main` branch. Merge changes via merge requests after review.
+2. Commit message format:
+   - First line: Short summary (72 chars max, use imperative verb, e.g. "Add gitignore rule for transcripts")
+   - Leave one blank line, then add detailed explanation about what and why the change is made.
+3. One commit for one logical change. Do not combine unrelated edits into one commit.
+4. Use descriptive branch names, such as `m1-fix-booking-filter`.
+5. Keep the repository clean; avoid committing temporary or generated files.
